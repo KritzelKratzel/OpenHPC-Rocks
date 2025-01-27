@@ -24,7 +24,7 @@ wwctl profile set -y default --tagadd ThreadsPerCore=1
 
 > [!NOTE]
 >
-> The preceding settings for `Sockets`, `CoresPerSocket`, and `ThreadsPerCore` are just examples for the perimeter of this recipe collection with virtualized compute-nodes. Adapt values for real compute-cluster deployments.
+> The preceding settings for `Sockets`, `CoresPerSocket`, and `ThreadsPerCore` are just examples for the perimeter of this recipe collection with virtualized compute-nodes. Adapt values to your needs.
 
 ## Configure Local Disk for /tmp and swap Usage
 
