@@ -3,9 +3,9 @@
 Just an unsorted reference for common compute cluster administration tasks. In case of doubt or emergency try calling *the four sisters* in the given order:
 
 ```bash
+wwctl container build rocky [--force] # Build of update the compute-node container image
 wwctl overlay build # Build or update all compute-node container overlays
 wwctl configure -a # Configure everything else
-wwctl container build rocky [--force] # Build of update the compute-node container image
 scontrol reconfigure # Reconfigure Slurm with the given data from Warewulf database
 ```
 

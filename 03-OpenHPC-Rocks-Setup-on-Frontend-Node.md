@@ -286,10 +286,9 @@ Open interactive session on the downloaded container `rocky` and run the given c
 wwctl container shell rocky
 
 # dnf repository inits and package installs
-crb enable
 dnf -y install http://repos.openhpc.community/OpenHPC/3/EL_9/x86_64/ohpc-release-3-1.el9.x86_64.rpm
-dnf -y install file vim xfsprogs kernel kernel-tools nhc-ohpc lmod-ohpc
-dnf -y install ohpc-base-compute ignition chrony munge ohpc-slurm-client
+crb enable
+dnf -y install file vim xfsprogs kernel kernel-tools nhc-ohpc lmod-ohpc ohpc-base-compute ignition chrony munge ohpc-slurm-client
 dnf -y update
 
 # Fixes in Slurm directories and permissions
