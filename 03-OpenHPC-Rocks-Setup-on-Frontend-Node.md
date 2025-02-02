@@ -280,7 +280,7 @@ In this section a common compute-node image called `rocky` will be created. Impo
 wwctl container import docker://ghcr.io/warewulf/warewulf-rockylinux:9 rocky --syncuser
 ```
 
-Open interactive session on the downloaded container `rocky` and run the given commands inside the container:
+Use option `--force` to overwrite an existing container. Open interactive session on the downloaded container `rocky` and run the given commands inside the container:
 
 ```bash
 wwctl container shell rocky

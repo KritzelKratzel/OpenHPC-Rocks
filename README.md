@@ -1,6 +1,6 @@
 # OpenHPC-Rocks Installation and Administration Guides
 
-Last Update: 2025-01-27. This is work in progress.
+Last Update: 2025-02-02. This is work in progress.
 
 ## Preamble
 
@@ -38,7 +38,7 @@ OpenHPC compute nodes need to accommodate the PXE-supplied boot image in a RAM d
 4. [Virtualized Compute-Nodes](./04-Virtualized-Compute-Nodes.md)
 5. [OpenHPC-Rocks Compute-Node Integration](./05-OpenHPC-Rocks-Compute-Node-Integration.md)
 6. [Common Cluster Administration Tasks](./06-Common-Cluster-Administration-Tasks.md)
-7. Integration of 3<sup>rd</sup> Party Software Packages
+7. [CST-2025 Cluster Installation](./07-CST-Cluster-Installation.md)
 
 ## Licenses
 
