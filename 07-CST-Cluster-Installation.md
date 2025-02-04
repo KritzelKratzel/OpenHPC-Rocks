@@ -217,7 +217,79 @@ $ wwctl container shell rocky
 
 ### Automatic Creation of GPU-Devices 
 
-FIXME
+It is necessary to verify the presence of Linux device nodes upon start-up of a compute node. Open compute-node container `rocky`, create two files, enable a new service and rebuild the container by calling `exit`. The desired content of both files is shown below.
+
+```bash
+$ wwctl container shell rocky
+[rocky] Warewulf> vim /usr/local/bin/nvidia-devs.sh
+[rocky] Warewulf> vim /etc/systemd/system/nvidia-devs.service
+[rocky] Warewulf> systemctl enable nvidia-devs
+[rocky] Warewulf> exit
+```
+
+Content and location of `/usr/local/bin/nvidia-devs.sh`:
+
+```bash
+#!/bin/bash
+
+/sbin/modprobe nvidia
+
+if [ "$?" -eq 0 ]; then
+  # Count the number of NVIDIA controllers found.
+  NVDEVS=`lspci | grep -i NVIDIA`
+  N3D=`echo "$NVDEVS" | grep "3D controller" | wc -l`
+  NVGA=`echo "$NVDEVS" | grep "VGA compatible controller" | wc -l`
+
+  N=`expr $N3D + $NVGA - 1`
+  for i in `seq 0 $N`; do
+    mknod -m 666 /dev/nvidia$i c 195 $i
+  done
+
+  mknod -m 666 /dev/nvidiactl c 195 255
+
+else
+  exit 1
+fi
+
+/sbin/modprobe nvidia-uvm
+
+if [ "$?" -eq 0 ]; then
+  # Find out the major device number used by the nvidia-uvm driver
+  D=`grep nvidia-uvm /proc/devices | awk '{print $1}'`
+
+  mknod -m 666 /dev/nvidia-uvm c $D 0
+else
+  exit 1
+fi
+
+exit 0
+```
+
+Content and location of `/etc/systemd/system/nvidia-devs.service`:
+
+```bash
+[Unit]
+Description=Create NVIDIA devices on startup
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /usr/local/bin/nvidia-devs.sh
+TimeoutStartSec=0
+RemainAfterExit=no
+
+[Install]
+WantedBy=multi-user.target
+```
+
+This approach also works for compute-nodes without GPU cards at all. In that case the systemd script `nvidia-devs.service`  simply throws an error and exits. The following command queries the corresponding systemd journal on `compute-0-0`:
+
+```bash
+$ ssh compute-0-0 journalctl -u nvidia-devs
+Feb 04 21:40:05 compute-0-0 bash[523]: modprobe: FATAL: Module nvidia not found in directory /lib/modules/5.14.0-503.19.1.el9_5.x86_64
+Feb 04 21:40:05 compute-0-0 systemd[1]: Failed to start Create NVIDIA devices on startup.
+$
+```
 
 ## References
 
@@ -226,3 +298,5 @@ FIXME
 - https://forums.rockylinux.org/t/tutorial-for-nvidia-gpu/4234/12
 - https://docs.redhat.com/en/documentation/red_hat_virtualization/4.3/html-single/setting_up_an_nvidia_gpu_for_a_virtual_machine_in_red_hat_virtualization/index#Detaching_the_GPU_device_from_the_host_nvidia_gpu_passthrough
 - https://github.com/taw00/howto/blob/master/howto-setup-a-local-yum-dnf-repository.md
+- https://www.admin-magazine.com/HPC/Articles/Warewulf-4-GPUs/
+- https://imaxv.com/2022/07/31/2022/Use-Nvidia-GPU-with-Podmam/

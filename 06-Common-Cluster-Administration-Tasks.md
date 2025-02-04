@@ -281,8 +281,6 @@ https://warewulf.org/docs/v4.5.x/
 
 https://www.admin-magazine.com/HPC/Articles/Warewulf-4
 
-https://www.admin-magazine.com/HPC/Articles/Warewulf-4-GPUs/
-
 https://www.admin-magazine.com/HPC/Articles/Warewulf-4-Time-and-Resource-Management
 
 https://ciq.com/blog/stateless-provisioning-of-stateful-nodes-examples-with-warewulf-4/
